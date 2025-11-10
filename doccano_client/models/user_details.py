@@ -1,7 +1,7 @@
-from typing import Dict
+from typing import Dict, Annotated
 
 from pydantic import BaseModel, model_validator
-from pydantic.types import ConstrainedStr
+from pydantic.types import StringConstraints
 
 
 class UserDetails(BaseModel):
@@ -16,10 +16,7 @@ class PasswordUpdated(BaseModel):
     detail: str
 
 
-class Password(ConstrainedStr):
-    min_length = 2
-    max_length = 128
-    strip_whitespace = True
+Password = Annotated[str, StringConstraints(min_length=2, max_length=128, strip_whitespace=True)]
 
 
 class PasswordChange(BaseModel):
