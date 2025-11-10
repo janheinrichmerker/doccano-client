@@ -51,7 +51,7 @@ def generate_random_hex_color():
 
 
 Text = Annotated[str, StringConstraints(min_length=1, max_length=100, strip_whitespace=True)]
-Color = Annotated[str, StringConstraints(regex=re.compile(r"#[a-fA-F0-9]{6}"))]
+Color = Annotated[str, StringConstraints(pattern=re.compile(r"#[a-fA-F0-9]{6}"))]
 
 
 class LabelType(BaseModel):
