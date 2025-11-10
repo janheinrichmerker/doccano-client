@@ -1,9 +1,9 @@
 import random
 import re
-from typing import Literal, Optional
+from typing import Literal, Optional, Annotated
 
 from pydantic import BaseModel, Field, model_validator
-from pydantic.types import ConstrainedStr
+from pydantic.types import StringConstraints
 
 PREFIX_KEY = Literal["ctrl", "shift", "ctrl shift"]
 SUFFIX_KEY = Literal[
@@ -50,14 +50,8 @@ def generate_random_hex_color():
     return f"#{random.randint(0, 0xFFFFFF):06x}"
 
 
-class Text(ConstrainedStr):
-    min_length = 1
-    max_length = 100
-    strip_whitespace = True
-
-
-class Color(ConstrainedStr):
-    regex = re.compile(r"#[a-fA-F0-9]{6}")
+Text = Annotated[str, StringConstraints(min_length=1, max_length=100, strip_whitespace=True)]
+Color = Annotated[str, StringConstraints(regex=re.compile(r"#[a-fA-F0-9]{6}"))]
 
 
 class LabelType(BaseModel):
