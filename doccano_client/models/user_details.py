@@ -1,6 +1,6 @@
 from typing import Dict
 
-from pydantic import BaseModel, root_validator
+from pydantic import BaseModel, model_validator
 from pydantic.types import ConstrainedStr
 
 
@@ -26,7 +26,7 @@ class PasswordChange(BaseModel):
     new_password: Password
     confirm_password: Password
 
-    @root_validator
+    @model_validator(mode='after')
     def new_password_matches_confirm_password(cls, values: Dict[str, Password]):
         new_password = values.get("new_password")
         confirm_password = values.get("confirm_password")
