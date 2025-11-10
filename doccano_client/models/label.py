@@ -5,8 +5,8 @@ from pydantic import (
     Field,
     NonNegativeFloat,
     NonNegativeInt,
-    root_validator,
-    validator,
+    model_validator,
+    field_validator,
 )
 
 
@@ -27,7 +27,7 @@ class Span(Label):
     start_offset: NonNegativeInt
     end_offset: NonNegativeInt
 
-    @root_validator
+    @model_validator(mode='after')
     def check_start_offset_is_less_than_end_offset(cls, values):
         start_offset, end_offset = values.get("start_offset"), values.get("end_offset")
         if start_offset >= end_offset:
@@ -56,7 +56,7 @@ class Segment(Label):
     points: List[NonNegativeFloat] = Field(default_factory=list)
     label: int
 
-    @validator("points")
+    @field_validator("points", mode="after")
     def check_points_length_is_even(cls, points):
         if len(points) % 2 != 0:
             raise ValueError("The length of points must be even.")
